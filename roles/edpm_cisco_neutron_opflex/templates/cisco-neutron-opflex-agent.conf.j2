@@ -1,0 +1,15 @@
+[DEFAULT]
+interface_driver = openvswitch
+ovs_use_veth = False
+state_path = {{ edpm_cisco_neutron_opflex_agent_DEFAULT_state_path }}
+host = {{ canonical_hostname }}
+resync_interval = {{ edpm_cisco_neutron_opflex_agent_DEFAULT_resync_interval }}
+resync_throttle = {{ edpm_cisco_neutron_opflex_agent_DEFAULT_resync_throttle }}
+num_sync_threads = {{ edpm_cisco_neutron_opflex_agent_DEFAULT_num_sync_threads }}
+bulk_reload_interval = {{ edpm_cisco_neutron_opflex_agent_DEFAULT_bulk_reload_interval }}
+
+
+[AGENT]
+root_helper = {{ edpm_cisco_neutron_opflex_agent_AGENT_root_helper }}
+report_interval = {{ edpm_cisco_neutron_opflex_agent_AGENT_report_interval }}
+availability_zone = {{ edpm_cisco_neutron_opflex_agent_AGENT_availability_zone }}
