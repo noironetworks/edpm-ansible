@@ -1,0 +1,16 @@
+spec:
+    nodeTemplate:
+      ansible:
+        ansibleVars:
+          edpm_cisco_neutron_opflex_agent_container_registry_logins: ""
+          edpm_cisco_neutron_opflex_image: "10.30.9.74:8787/osp18/openstack-ciscoaci-neutron-opflex:18.0.9"
+          edpm_ciscoaci_lldp_image: "10.30.9.74:8787/osp18/openstack-ciscoaci-lldp:18.0.9"
+          edpm_cisco_opflex_image: "10.30.9.74:8787/osp18/openstack-ciscoaci-opflex:18.0.9"
+          edpm_cisco_opflex_agent_aci_opflex_uplink_interface: bond0
+          edpm_cisco_opflex_agent_aci_apic_infravlan: 4093
+          edpm_cisco_opflex_agent_aci_apic_systemid: 'virt1-kube'
+          edpm_lldpd_interfaces: '*,!tap*'
+    services:
+    - neutron-opflex-agent-custom-service
+    - cisco-opflex-agent-custom-service
+    - ciscoaci-lldp-agent-service

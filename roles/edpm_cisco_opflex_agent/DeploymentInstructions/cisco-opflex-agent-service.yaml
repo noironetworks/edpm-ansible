@@ -1,0 +1,8 @@
+apiVersion: dataplane.openstack.org/v1beta1
+kind: OpenStackDataPlaneService
+metadata:
+  name: cisco-opflex-agent-custom-service
+spec:
+  label: dataplane-deployment-cisco-opflex-agent-service
+  openStackAnsibleEERunnerImage: 10.30.9.74:8787/osp18/cisco-opflex-agent-service:18.0.9
+  playbook: osp.edpm.opflex_agent

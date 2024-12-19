@@ -1,0 +1,139 @@
+{
+	"log": {
+		"level": "{{ edpm_cisco_opflex_agent_opflex_log_level }}"
+	},
+
+	"opflex": {
+		"domain": "comp/prov-OpenStack/ctrlr-[{{ edpm_cisco_opflex_agent_aci_apic_systemid }}]-{{ edpm_cisco_opflex_agent_aci_apic_systemid }}/sw-InsiemeLSOid",
+		"name": "{{ ansible_hostname }}",
+		"peers": [
+			{"hostname": "{{ edpm_cisco_opflex_agent_aci_apic_infra_subnet_gateway }}", "port": "{{ edpm_cisco_opflex_agent_opflex_peer_port }}"}
+		],
+		"ssl": {
+			"mode": "{{ edpm_cisco_opflex_agent_opflex_ssl_mode }}",
+			"ca-store": "/etc/ssl/certs/"
+		},
+		"inspector": {
+			"enabled": true,
+			"socket-name": "{{ edpm_cisco_opflex_agent_opflex_inspect_socket }}"
+		},
+		"notif": {
+			"enabled": true,
+			"socket-name": "{{ edpm_cisco_opflex_agent_opflex_notification_socket }}",
+			// "socket-owner": "root",
+			"socket-group": "opflexep",
+			"socket-permissions": "770"
+		},
+		"timers": {
+			"policy-retry-delay": "{{ edpm_cisco_opflex_agent_opflex_retry_delay }}"
+		},
+		{% if edpm_cisco_opflex_agent_opflex_startup_policy_enabled %}
+		"startup": {
+			"enabled": true,
+			"policy-file": "{{ edpm_cisco_opflex_agent_opflex_startup_policy_file }}",
+			"policy-duration": {{ edpm_cisco_opflex_agent_opflex_startup_policy_duration }},
+			"resolve-aft-conn": {{ edpm_cisco_opflex_agent_opflex_startup_policy_after_connect|string|lower }}
+		},
+		{% endif %}
+
+		"statistics": {
+			"mode": "{{ edpm_cisco_opflex_agent_opflex_statistics_mode }}",
+			"interface": {
+                "enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_interface_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_interface_interval }}
+            },
+            "contract": {
+                "enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_contract_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_contract_interval }}
+            },
+            "security-group": {
+				"enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_security_group_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_security_group_interval }}
+            },
+            "service": {
+                // Disable/Enable stats flow creation
+                "flow-disabled": {{ edpm_cisco_opflex_agent_opflex_statistics_service_flow_disabled|string|lower }},
+                // Disable/Enable stats collection
+                "enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_service_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_service_interval }}
+            },
+            "table-drop": {
+                "enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_table_drop_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_table_drop_interval }}
+            },
+            "system": {
+                "enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_system_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_system_interval }}
+            },
+            "nat": {
+                "enabled": {{ edpm_cisco_opflex_agent_opflex_statistics_nat_enabled|string|lower }},
+                "interval": {{ edpm_cisco_opflex_agent_opflex_statistics_nat_interval }}
+            }
+		},
+		"asyncjson" : { "enabled" : "{{ edpm_cisco_opflex_agent_opflex_opflex_async_parser|string|lower }}"}
+	},
+
+    "ovs": {
+        "asyncjson" : { "enabled" : "{{ edpm_cisco_opflex_agent_opflex_ovsdb_async_parser|string|lower }}"}
+    },
+
+    "feature": {
+        "disabled": {{ edpm_cisco_opflex_agent_opflex_disabled_features }}
+    },
+
+    "endpoint-sources": {
+        "filesystem": ["{{ edpm_cisco_opflex_agent_opflex_endpoint_dir }}"]
+    },
+
+    "service-sources": {
+        "filesystem": ["/var/lib/opflex-agent-ovs/services"]
+    },
+
+	"renderers": {
+		"stitched-mode": {
+			"int-bridge-name": "{{ edpm_cisco_opflex_agent_aci_opflex_ovs_bridge }}",
+			"access-bridge-name": "br-int",
+
+			"encap": {
+				"vxlan" : {
+					"encap-iface": "{{ edpm_cisco_opflex_agent_encap_iface }}",
+					"uplink-iface": "{{ edpm_cisco_opflex_agent_aci_opflex_uplink_interface }}.{{ edpm_cisco_opflex_agent_aci_apic_infravlan }}",
+					"uplink-vlan": {{ edpm_cisco_opflex_agent_aci_apic_infravlan }},
+					"uplink-native-iface": "patch-fab-ex",
+					"remote-ip": "{{ edpm_cisco_opflex_agent_aci_apic_infra_anycast_address }}",
+					"remote-port": {{ edpm_cisco_opflex_agent_remote_port }}
+				}
+			},
+			"forwarding": {
+				"virtual-router": {
+					"enabled": {{ edpm_cisco_opflex_agent_opflex_virtual_router|string|lower }},
+					"mac": "{{ edpm_cisco_opflex_agent_opflex_virtual_router_mac }}",
+					"ipv6": {
+						"router-advertisement": "{{ edpm_cisco_opflex_agent_opflex_router_advertisement|string|lower }}"
+					}
+				},
+				"virtual-dhcp": {
+					"enabled": "{{ edpm_cisco_opflex_agent_opflex_virtual_dhcp_enabled|string|lower }}",
+					"mac": "{{ edpm_cisco_opflex_agent_opflex_virtual_dhcp_mac }}"
+				}
+			},
+			"flowid-cache-dir": "{{ edpm_cisco_opflex_agent_opflex_cache_dir }}",
+			"drop-log": {
+                 // Encapsulate drop-log traffic with GENEVE.
+                 "geneve" : {
+                    // The name of the drop-log tunnel integration interface in OVS
+                    "int-br-iface": "gen1",
+                    // The name of the drop-log tunnel access interface in OVS
+                    "access-br-iface": "gen2",
+                    // Remote IP address that the packet should be sent to.
+                    "remote-ip" : "192.168.1.2"
+                 }
+			},
+			"drop-log-config-sources": {
+                     // Filesystem path to monitor for drop log control
+                     // Default: no drop log service
+                     "filesystem": ["/var/lib/opflex-agent-ovs/droplog"]
+			}
+        }
+    }
+}
