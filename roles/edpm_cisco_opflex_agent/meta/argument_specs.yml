@@ -1,0 +1,18 @@
+---
+argument_specs:
+  main:
+    short_description: The main entry point for the edpm_cisco_opflex role.
+    options:
+       edpm_cisco_opflex_agent_conf_dir:
+         default: "/etc/opflex-agent-ovs"
+         description: |
+           The path to the directory containing the configuration file for the agent.
+         type: str
+       edpm_opflex_aci_apic_systemid:
+         default: "defaultSystemId"
+         type: str
+         description: The ID of the system containing the policy.
+       edpm_opflex_vmm_hostname:
+         default: "defaultHostName"
+         type: str
+         description: The unique name in the policy domain for this agent.
