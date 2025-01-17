@@ -1,0 +1,213 @@
+{
+    // Logging configuration
+    // "log": {
+    //     // Set the log level.
+    //     // Possible values in descending order of verbosity:
+    //     // "trace" (least level verbose logs"),
+    //     // "debug7"-"debug0", "debug" (synonym for "debug0"),
+    //     // "info", "warning", "error", "fatal"
+    //     // Default: "info"
+    //     "level": "info"
+    // },
+
+    // Configuration related to the OpFlex protocol
+    "opflex": {
+        // The policy domain for this agent.
+        "domain": "",
+        "domain": "comp/prov-OpenStack/ctrlr-[{{ edpm_cisco_opflex_aci_apic_systemid }}]-{{ edpm_cisco_opflex_aci_apic_systemid }}/sw-InsiemeLSOid",
+
+        // The unique name in the policy domain for this agent.
+        "name": "{{ edpm_opflex_vmm_hostname }}",
+
+        // a list of peers to connect to, by hostname and port.  One
+        // peer, or an anycast pseudo-peer, is sufficient to bootstrap
+        // the connection without needing an exhaustive list of all
+        // peers.
+        "peers": [
+            // EXAMPLE:
+            // {"hostname": "10.0.0.30", "port": 8009}
+        ],
+
+        "ssl": {
+            // SSL mode.  Possible values:
+            // disabled: communicate without encryption (default)
+            // encrypted: encrypt but do not verify peers
+            // secure: encrypt and verify peer certificates
+            "mode": "encrypted",
+
+            // The path to a directory containing trusted certificate
+            // authority public certificates, or a file containing a
+            // specific CA certificate.
+            // Default: "DEFAULT_CA_CERT_DIR"
+            "ca-store": "DEFAULT_CA_CERT_DIR"
+
+            // Use a client certificate to authenticate to the server
+            // "path": specifies the path to the PEM file for this
+            // peer, containing its certificate and its private key,
+            // possibly encrypted.
+            // "password": specifies the password needed to decrypt the
+            // private key for the certificate
+            // Default: Do not use a client certificate
+            //
+            // EXAMPLE:
+            //, "client-cert" : {
+            //    "path": "DEFAULT_CLIENT_CERT_PATH",
+            //    "password": "password"
+            //}
+        },
+
+        "inspector": {
+            // Enable the MODB inspector service, which allows
+            // inspecting the state of the managed object database.
+            // Default: true
+            "enabled": true,
+
+            // Listen on the specified socket for the inspector
+            // Default: "DEFAULT_INSPECTOR_SOCKET"
+            "socket-name": "DEFAULT_INSPECTOR_SOCKET"
+        },
+
+        "notif": {
+            // Enable the agent notification service, which sends
+            // notifications to interested listeners over a UNIX
+            // socket.
+            // Default: true
+            "enabled": true,
+
+            // Listen on the specified socket for the inspector
+            // Default: "DEFAULT_NOTIF_SOCKET"
+            "socket-name": "DEFAULT_NOTIF_SOCKET",
+
+            // Set the socket owner user after binding if the user
+            // exists
+            // Default: do not set the owner
+            // "socket-owner": "root",
+
+            // Set the socket group after binding if the group name
+            // exists
+            // Default: do not set the group
+            "socket-group": "opflexep",
+
+            // Set the socket permissions after binding to the
+            // specified octal permissions mask
+            // Default: do not set the permissions
+            "socket-permissions": "770"
+        },
+       "timers": {
+           // Custom settings for various timers related to opflex
+           // prr - Policy Resolve Request timer duration in seconds.
+           // default 7200 secs, min 15 secs
+           // "prr": 7200,
+           //
+           // How long to wait for the initial peer
+           // handshake to complete (in ms)
+           // "handshake-timeout" : 45000
+       },
+       // Statistics. Counters for various artifacts.
+       // mode: can have three values, viz.
+       //       "real" - counters are based on actual data traffic. default.
+       //       "simulate" - simulate counters.
+       //       "off" - turn off all counters.
+       // There are three sections, one each for interface, contract and
+       // security-group counters. Each section has two fields, viz.,
+       // enabled to enable/disable the counter and
+       // interval to set the counter update interval in secs.
+       "statistics": {
+       //   "mode": "real",
+       //   "interface": {
+       //      "enabled": true,
+       //      "interval": 30
+       //   },
+       //   "contract": {
+       //      "enabled": true,
+       //      "interval": 10
+       //   },
+       //   "security-group": {
+       //      "enabled": true,
+       //      "interval": 10
+       //   },
+       //   "service": {
+       //      // Disable/Enable stats flow creation
+       //      "flow-disabled": false,
+       //      // Disable/Enable stats collection
+       //      "enabled": true,
+       //      "interval": 10
+       //   },
+       //   "table-drop": {
+       //      "enabled": true,
+       //      "interval": 10
+       //   }
+       }
+    },
+
+    // Endpoint sources provide metadata about local endpoints
+    "endpoint-sources": {
+        // Filesystem path to monitor for endpoint information
+        // Default: no endpoint sources
+        "filesystem": ["DEFAULT_FS_ENDPOINT_DIR"],
+        "model-local": ["default"]
+    },
+
+    // Service sources provide metadata about services that can
+    // provide functionality for local endpoints
+    "service-sources": {
+        // Filesystem path to monitor for service information
+        // Default: no service sources
+        "filesystem": ["DEFAULT_FS_SERVICE_DIR"]
+    },
+
+    // Debug config
+    "drop-log-config-sources": {
+        // Filesystem path to monitor for drop log control
+        // Default: no drop log service
+        "filesystem": ["DEFAULT_DROP_LOG_DIR"]
+    },
+
+    // Dynamically loaded plugins can add new functionality to the
+    // opflex agent at startup.
+    "plugins": {
+        "renderer": []
+    },
+
+    // feature on/off switch
+    "feature": {
+        "disabled": []
+    },
+
+    // Configs related to prometheus
+    "prometheus": {
+    //    By default prometheus stats export will be enabled provided
+    //    "--enable-prometheus" is set during configuration. If the export
+    //    needs to be disabled during agent bootup, then set the below flag
+    //    to false
+    //    "enabled": "true",
+    //
+    //    By default prometheus exposer will bind with all IPs. Set
+    //    localhost-only to true if prometheus export should happen only
+    //    on 127.0.0.1.
+    //    "localhost-only": "true",
+    //
+    //    Stats metrics for flows between local Endpoints and East-West Services
+    //    can lead to potentially large number of metrics. There might be cases
+    //    where only few of these ep <--> service metrics will actually report
+    //    traffic counts. To not overwhelm prometheus with Nans, these metrics
+    //    by default are not created in prometheus unless there is a valid stats
+    //    value.
+    //    "expose-epsvc-nan": "false",
+    //
+    //    EP annotation for metrics:
+    //    vm-name and namespace will be displayed as "name" and "namespace"
+    //    by default if they are available. In case, vm-name isnt available,
+    //    then "name" will be set as the interface-name of the EP.
+    //    Any other user defined metrics can be mentioned in the below list.
+    //    if these are present in EP file's attributes, then those will be
+    //    annotated as labels for EP metrics.
+    //    "ep-attributes": []
+    },
+
+    // Renderers enforce policy obtained via OpFlex.
+    // Default: no renderers
+    "renderers": {
+    }
+
+}
