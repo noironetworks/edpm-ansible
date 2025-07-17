@@ -1,0 +1,10 @@
+command: /bin/supervisord -c /etc/neutron/ciscoaci/ciscoaci_lldp_supervisord.conf
+config_files:
+- source: "/var/lib/kolla/config_files/src/*"
+  dest: "/"
+  merge: true
+  preserve_properties: true
+permissions:
+- path: /var/log/neutron
+  owner: neutron:neutron
+  recurse: true

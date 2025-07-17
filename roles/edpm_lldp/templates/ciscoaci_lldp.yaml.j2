@@ -1,0 +1,18 @@
+{% set edpm_ciscoaci_lldp_volumes = [] %}
+{%- set edpm_ciscoaci_lldp_volumes =
+	    edpm_ciscoaci_lldp_volumes +
+        edpm_ciscoaci_lldp_common_volumes +
+        edpm_ciscoaci_lldp_tls_cacert_volumes %}
+start_order: 10
+image: "{{ edpm_ciscoaci_lldp_image }}"
+net: host
+pid: host
+cgroupns: host
+privileged: true
+user: root
+restart: always
+healthcheck:
+  test: /etc/neutron/ciscoaci/lldp_healthcheck
+volumes: {{ edpm_ciscoaci_lldp_volumes }}
+environment:
+  KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
