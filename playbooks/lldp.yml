@@ -1,0 +1,13 @@
+---
+- name: Deploy EDPM LLDP
+  hosts: "{{ edpm_override_hosts | default('all', true) }}"
+  strategy: linear
+  gather_facts: "{{ gather_facts | default(false) }}"
+  any_errors_fatal: "{{ edpm_any_errors_fatal | default(true) }}"
+  max_fail_percentage: "{{ edpm_max_fail_percentage | default(0) }}"
+  tasks:
+    - name: LLDP
+      ansible.builtin.import_role:
+        name: /usr/share/ansible/roles/edpm_lldp
+      tags:
+        - edpm_ciscoaci_lldp
