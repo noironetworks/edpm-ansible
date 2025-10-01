@@ -1,0 +1,5 @@
+[DEFAULT]
+host = {{ canonical_hostname }}
+{% if edpm_cisco_neutron_opflex_DEFAULT_transport_url != '' %}
+transport_url = {{ edpm_cisco_neutron_opflex_DEFAULT_transport_url }}
+{% endif %}
