@@ -1,0 +1,35 @@
+---
+# Copyright 2024 Cisco Systems Inc.
+# All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+
+- name: Assert Variables are Set
+  ansible.builtin.assert:
+    that:
+      - edpm_cisco_opflex_agent_aci_opflex_uplink_interface != ""
+      - edpm_cisco_opflex_agent_aci_apic_infravlan != ""
+      - edpm_cisco_opflex_image != ""
+    fail_msg: "'edpm_cisco_opflex_agent_aci_opflex_uplink_interface', 'edpm_cisco_opflex_agent_aci_apic_infravlan', & 'edpm_cisco_opflex_image' must be set."
+
+- name: Bootstrap cisco-opflex-agent
+  ansible.builtin.import_tasks: bootstrap.yml
+
+- name: Install cisco-opflex-agent
+  ansible.builtin.import_tasks: install.yml
+
+- name: Configure cisco-opflex-agent
+  ansible.builtin.import_tasks: configure.yml
+
+- name: Ensure cisco-opflex-agent is running
+  ansible.builtin.import_tasks: run.yml
