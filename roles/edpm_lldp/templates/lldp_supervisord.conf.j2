@@ -24,7 +24,7 @@ nocleanup = false
 strip_ansi = false
 
 [program:lldp]
-command=/usr/sbin/lldpd -d -I {{ edpm_lldpd_interfaces }}
+command=/usr/sbin/lldpd -d -I {{ edpm_ciscoaci_lldp_interfaces }}
 exitcodes=0,2
 stopasgroup=true
 startsecs=10
