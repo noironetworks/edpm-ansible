@@ -117,14 +117,29 @@
   register: intf_out
   ignore_errors: true
   become: true
-- set_fact:
-     intf_json: "{{ intf_out.stdout | regex_search('{(?:[^{}])*}', multiline=True) | to_json }}"
+
+- name: parse interface JSON safely
+  set_fact:
+    intf_dict: "{{ (intf_out.stdout | regex_search('{[^{}]*}') | default({}, true) | from_json) }}"
+  when:
+    - intf_out is defined
+    - intf_out.rc == 0
+    - intf_out.stdout is defined
+    - intf_out.stdout | length > 0
+
+- name: set empty dict if command failed
+  set_fact:
+    intf_dict: {}
+  when: intf_dict is not defined
 
 - name: set aci_opflex_uplink_interface fact
   set_fact:
      aci_opflex_uplink_interface: "{{ item.value }}"
-  when: item.key is defined and item.key == edpm_cisco_opflex_agent_aci_opflex_uplink_interface
-  with_dict: "{{ intf_json | from_json }}"
+  when:
+    - intf_dict | length > 0
+    - item.key is defined
+    - item.key == edpm_cisco_opflex_agent_aci_opflex_uplink_interface
+  with_dict: "{{ intf_dict | dict2items }}"
 
 - set_fact:
      aci_opflex_uplink_interface: "{{ edpm_cisco_opflex_agent_aci_opflex_uplink_interface }}"
