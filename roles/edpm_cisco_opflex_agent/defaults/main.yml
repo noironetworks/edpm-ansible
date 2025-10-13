@@ -50,8 +50,6 @@ edpm_cisco_opflex_common_volumes:
     - "/run/openvswitch:/run/openvswitch:shared,z"
     - "/etc/opflex-agent-ovs/opflex_supervisord.conf:/etc/opflex-agent-ovs/opflex_supervisord.conf:ro"
     - "{{ edpm_cisco_opflex_agent_config_dir }}:/var/lib/kolla/config_files/src:ro"
-    - "{{ edpm_cisco_opflex_agent_neutron_dir }}/etc/neutron/neutron.conf:/etc/neutron/neutron.conf:ro"
-    - "{{ edpm_cisco_opflex_agent_neutron_dir }}/etc/neutron/metadata_agent.ini:/etc/neutron/metadata_agent.ini:ro"
     - "/var/log/containers/opflex:/var/log/opflex"
     - "/var/log/containers/neutron:/var/log/neutron"
     - "/var/run/openvswitch/:/var/run/openvswitch/:shared,z"
