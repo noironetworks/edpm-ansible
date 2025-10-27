@@ -4,7 +4,7 @@ metadata:
   name: neutron-opflex-agent-custom-service
 spec:
   label: dataplane-deployment-neutron-opflex-agent-service
-  openStackAnsibleEERunnerImage: 10.30.9.74:8787/osp18/neutron-opflex-agent-service:18.0.9
+  openStackAnsibleEERunnerImage: 10.30.9.74:8787/osp18/combined-ansibleee-runner:18.0.9
   playbook: osp.edpm.neutron_opflex_agent
   caCerts: combined-ca-bundle
   edpmServiceType: neutron-opflex-agent-custom-service

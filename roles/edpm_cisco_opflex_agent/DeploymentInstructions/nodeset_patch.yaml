@@ -9,7 +9,6 @@ spec:
           edpm_cisco_opflex_agent_aci_opflex_uplink_interface: bond0
           edpm_cisco_opflex_agent_aci_apic_infravlan: 4093
           edpm_cisco_opflex_agent_aci_apic_systemid: 'virt1-kube'
-          edpm_lldpd_interfaces: '*,!tap*'
     services:
     - neutron-opflex-agent-custom-service
     - cisco-opflex-agent-custom-service
