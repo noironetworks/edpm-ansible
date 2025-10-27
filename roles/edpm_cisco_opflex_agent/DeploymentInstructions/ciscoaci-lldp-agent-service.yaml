@@ -4,7 +4,7 @@ metadata:
   name: ciscoaci-lldp-agent-service
 spec:
   label: dataplane-deployment-ciscoaci-lldp-agent-service
-  openStackAnsibleEERunnerImage: 10.30.9.74:8787/osp18/ciscoaci-lldp-agent-service:18.0.9
+  openStackAnsibleEERunnerImage: 10.30.9.74:8787/osp18/combined-ansibleee-runner:18.0.9
   playbook: osp.edpm.lldp
   caCerts: combined-ca-bundle
   edpmServiceType: ciscoaci-lldp-agent-service
