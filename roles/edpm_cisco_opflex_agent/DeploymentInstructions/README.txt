@@ -42,3 +42,4 @@ reboot-os-data-plane-deploy-openstack-data-plane-rl5f6            0/1     Comple
 run-os-data-plane-deploy-openstack-data-plane-lmgsc               0/1     Completed   0          49m
 ssh-known-hosts-data-plane-deploy-jlqwf                           0/1     Completed   0          50m
 validate-network-data-plane-deploy-openstack-data-plane-rgv8q     0/1     Completed   0          51m
+

@@ -18,3 +18,4 @@ Containerfile  edpm_cisco_opflex_agent  edpm_lldp  edpm_neutron_opflex_agent  ll
 3. Build then push
 [stack@ostack-pt-1-ucloud-17 testbuild-combine]$ podman build -t 10.30.9.74:8787/osp18/combined-ansibleee-runner:18.0.9 .
 [stack@ostack-pt-1-ucloud-17 testbuild-combine]$ podman push 10.30.9.74:8787/osp18/combined-ansibleee-runner:18.0.9 
+
