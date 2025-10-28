@@ -1,32 +1,72 @@
-To Deploy the Neutron Opflex Agent, Opflex Agent, DHCP Agent & LLDP Agent
+# Deployment Instructions
 
-- Apply the services
+Instructions for deploying the Neutron OpFlex Agent, OpFlex Agent, DHCP Agent, and LLDP Agent.
 
+## Prerequisites
+
+- OpenStack cluster with dataplane operator configured
+- Access to `oc` command-line tool
+- Built and pushed the combined-ansibleee-runner image (see [BUILD.md](BUILD.md))
+
+## Deployment Steps
+
+### 1. Apply the Services
+
+Apply the custom EDPM services to your OpenStack namespace:
+
+```bash
 oc apply -f neutron-opflex-agent-service.yaml -n openstack
 oc apply -f ciscoaci-lldp-agent-service.yaml -n openstack
 oc apply -f cisco-opflex-agent-service.yaml -n openstack
+```
 
-- Make sure that they're up
+### 2. Verify Services are Created
 
+Check that the services are registered:
+
+```bash
 oc get openstackdataplaneservice -n openstack
+```
 
-- Create the nodeset_patch.yaml based on the templated included.
-	* edpm_cisco_opflex_agent_aci_apic_systemid should be set
-	* Make sure the images given in this file are the correct ones
+### 3. Configure the NodeSet Patch
 
-- Create the nodeset_patch_deploy.yaml based on the template included.
+Create `nodeset_patch.yaml` based on the template included in this directory.
 
-- Apply the patch
+**Important configuration:**
+- Set `edpm_cisco_opflex_agent_aci_apic_systemid` to your ACI APIC system ID
+- Verify that the container images specified are correct for your environment
 
+### 4. Configure the Deployment Patch
+
+Create `nodeset_patch_deploy.yaml` based on the template included in this directory.
+
+### 5. Apply the NodeSet Patch
+
+Apply the patch to your data plane nodeset:
+
+```bash
 oc patch openstackdataplanenodeset openstack-data-plane -n openstack --type merge --patch-file nodeset_patch.yaml
+```
 
-- Apply the deployment file
+### 6. Apply the Deployment
 
+Trigger the deployment:
+
+```bash
 oc apply -f nodeset_patch_deploy.yaml
+```
 
-- Deployment should now be running
+### 7. Monitor the Deployment
 
-$ oc get pod -l app=openstackansibleee
+The deployment should now be running. Monitor the progress:
+
+```bash
+oc get pod -l app=openstackansibleee -n openstack
+```
+
+**Example output:**
+
+```
 NAME                                                              READY   STATUS      RESTARTS   AGE
 bootstrap-data-plane-deploy-openstack-data-plane-kz9g7            0/1     Completed   0          53m
 configure-network-data-plane-deploy-openstack-data-plane-c5xlp    0/1     Completed   0          52m
@@ -42,4 +82,27 @@ reboot-os-data-plane-deploy-openstack-data-plane-rl5f6            0/1     Comple
 run-os-data-plane-deploy-openstack-data-plane-lmgsc               0/1     Completed   0          49m
 ssh-known-hosts-data-plane-deploy-jlqwf                           0/1     Completed   0          50m
 validate-network-data-plane-deploy-openstack-data-plane-rgv8q     0/1     Completed   0          51m
+```
 
+Look for the custom service pods (e.g., `neutron-opflex-agent-custom-service-deploy-*`) to verify deployment.
+
+## Troubleshooting
+
+### Check Service Logs
+
+```bash
+oc logs <pod-name> -n openstack
+```
+
+### Verify Services are Running on Data Plane Nodes
+
+SSH into your data plane nodes and check container status:
+
+```bash
+sudo podman ps | grep opflex
+```
+
+## See Also
+
+- [BUILD.md](BUILD.md) - Instructions for building the container image
+- [Build Instructions.txt](Build%20Instructions.txt) - Original build documentation
