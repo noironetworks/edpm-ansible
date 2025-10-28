@@ -15,10 +15,12 @@ Instructions for deploying the Neutron OpFlex Agent, OpFlex Agent, DHCP Agent, a
 Apply the custom EDPM services to your OpenStack namespace:
 
 ```bash
-oc apply -f neutron-opflex-agent-service.yaml -n openstack
-oc apply -f ciscoaci-lldp-agent-service.yaml -n openstack
-oc apply -f cisco-opflex-agent-service.yaml -n openstack
+oc apply -f ../../edpm_neutron_opflex_agent/docs/neutron-opflex-agent-service.yaml -n openstack
+oc apply -f ../../edpm_lldp/docs/ciscoaci-lldp-agent-service.yaml -n openstack
+oc apply -f ../docs/cisco-opflex-agent-service.yaml -n openstack
 ```
+
+> **Note**: Service YAML files are located in each role's `docs/` directory for better organization.
 
 ### 2. Verify Services are Created
 
