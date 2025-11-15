@@ -101,17 +101,6 @@
     path: "/var/lib/opflex/files/droplog/a.droplogcfg"
     state: absent
 
-- name: Enable droplog in NFT
-  when: internal_droplog_enabled|bool
-  ansible.builtin.shell: nft add rule ip nat OUTPUT udp dport 6081 dnat 127.0.0.1:50000
-  become: true
-
-- name: Disable droplog in NFT
-  when: not internal_droplog_enabled|bool
-  ansible.builtin.shell: nft delete rule ip nat OUTPUT handle $(nft -a list table ip nat | grep 6081 | awk '{print $NF}')
-  become: true
-  ignore_errors: true
-
 - name: get mapped interface
   ansible.builtin.command: "os-net-config -i {{ edpm_cisco_opflex_agent_aci_opflex_uplink_interface }}"
   register: intf_out
