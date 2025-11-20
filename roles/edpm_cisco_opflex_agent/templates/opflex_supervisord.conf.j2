@@ -83,7 +83,7 @@ startsecs=0
 
 {% if edpm_cisco_opflex_agent_opflex_enable_drop_log == true %}
 [program:monitor-droplog]
-command=/bin/sh -c "while true; do sleep 5; sudo neutron-rootwrap /etc/neutron/rootwrap.conf iptables-nft -t nat --check OUTPUT -p udp --dport 6081 -j DNAT --to 127.0.0.1:50000 || sudo neutron-rootwrap /etc/neutron/rootwrap.conf iptables-nft -t nat -A OUTPUT -p udp --dport 6081 -j DNAT --to 127.0.0.1:50000; done"
+command=/bin/sh -c "while true; do sleep 5; sudo neutron-rootwrap /etc/neutron/rootwrap.conf nft -a list table ip nat | grep 'udp dport 6081 .* dnat to 127.0.0.1:50000' || sudo neutron-rootwrap /etc/neutron/rootwrap.conf nft add rule ip nat OUTPUT udp dport 6081 counter packets 0 bytes 0 dnat to 127.0.0.1:50000; done"
 
 [program:ovs-vsctl-add-droplog]
 command=sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf ovs-vsctl -- --may-exist add-port br-int gen2 -- set interface gen2 type=geneve options:remote_ip=flow options:key=2
@@ -98,5 +98,5 @@ autorestart=unexpected
 startsecs=0
 {% else %}
 [program:monitor-droplog]
-command=/bin/sh -c "while true; do sleep 5; sudo neutron-rootwrap /etc/neutron/rootwrap.conf iptables-nft -t nat --check OUTPUT -p udp --dport 6081 -j DNAT --to 127.0.0.1:50000 && sudo neutron-rootwrap /etc/neutron/rootwrap.conf iptables-nft -t nat -D OUTPUT -p udp --dport 6081 -j DNAT --to 127.0.0.1:50000; done"
+command=/bin/sh -c "while true; do sleep 5; sudo neutron-rootwrap /etc/neutron/rootwrap.conf nft -a list table ip nat | grep 'udp dport 6081 .* dnat to 127.0.0.1:50000' && sudo neutron-rootwrap /etc/neutron/rootwrap.conf nft delete rule ip nat OUTPUT handle $(sudo neutron-rootwrap /etc/neutron/rootwrap.conf nft -a list table ip nat | grep 'udp dport 6081 .*dnat to 127.0.0.1:50000' | awk -F"handle" '{print $2}' | awk 'NR==1 {print}'); done"
 {% endif %}
