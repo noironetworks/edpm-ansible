@@ -1,0 +1,9 @@
+1. Clone repo
+
+2. Enter repo parent directory
+
+cd edpm-ansible
+
+3. Build then push
+podman build -t <Registry IP>/osp18/combined-ansibleee-runner:latest -f ./osp18/Containerfile .
+podman push <Registry IP>/osp18/combined-ansibleee-runner:latest
