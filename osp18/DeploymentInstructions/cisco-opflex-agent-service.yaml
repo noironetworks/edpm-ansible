@@ -4,5 +4,5 @@ metadata:
   name: cisco-opflex-agent-custom-service
 spec:
   label: dataplane-deployment-cisco-opflex-agent-service
-  openStackAnsibleEERunnerImage: 10.30.9.74:8787/osp18/combined-ansibleee-runner:18.0.9
+  openStackAnsibleEERunnerImage: registry.connect.redhat.com/noiro/combined-ansibleee-runner:latest
   playbook: osp.edpm.opflex_agent
