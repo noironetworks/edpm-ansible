@@ -68,6 +68,9 @@ edpm_cisco_neutron_opflex_common_volumes:
 
 edpm_cisco_neutron_opflex_DEFAULT_transport_url: ''
 
+# oslo_messaging_rabbit settings (read from DHCP secret at runtime)
+edpm_cisco_neutron_opflex_oslo_messaging_rabbit_config: ''
+
 edpm_download_cache_podman_auth_file: ""
 
 # rootwrap.conf

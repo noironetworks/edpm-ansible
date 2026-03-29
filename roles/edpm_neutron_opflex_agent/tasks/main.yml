@@ -25,6 +25,20 @@
   ansible.builtin.set_fact:
     edpm_cisco_neutron_opflex_DEFAULT_transport_url: "{{ slurp_transport_url.content | b64decode }}"
 
+- name: Read oslo_messaging_rabbit config from DHCP secret
+  ansible.builtin.slurp:
+    src: /var/lib/openstack/neutron-dhcp-agent/10-neutron-dhcp.conf
+  register: slurp_dhcp_config
+  failed_when: false
+
+- name: Parse oslo_messaging_rabbit section from DHCP config
+  ansible.builtin.set_fact:
+    edpm_cisco_neutron_opflex_oslo_messaging_rabbit_config: >-
+      {{ (slurp_dhcp_config.content | b64decode |
+          regex_search('\[oslo_messaging_rabbit\]\n((?:[^\[].*)(?:\n(?:[^\[].*))*)', '\1'))
+         | default([''], true) | first }}
+  when: slurp_dhcp_config is succeeded and slurp_dhcp_config.content is defined
+
 - name: Assert Variables are Set
   ansible.builtin.assert:
     that:
