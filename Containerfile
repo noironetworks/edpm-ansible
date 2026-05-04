@@ -1,4 +1,8 @@
 FROM quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest
+RUN microdnf update -y && microdnf clean all
+LABEL vendor="Cisco Systems" maintainer="Cisco Systems"
+RUN mkdir -p /licenses
+COPY contrib/aci-deployment/LICENSE.txt /licenses/LICENSE.txt
 COPY roles/edpm_lldp /usr/share/ansible/roles/edpm_lldp
 COPY roles/edpm_neutron_opflex_agent /usr/share/ansible/roles/edpm_neutron_opflex_agent
 COPY roles/edpm_cisco_opflex_agent /usr/share/ansible/roles/edpm_cisco_opflex_agent

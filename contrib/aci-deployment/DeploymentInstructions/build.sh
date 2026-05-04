@@ -85,9 +85,15 @@ echo ""
 
 # Create Containerfile in repo root
 CONTAINERFILE="$REPO_ROOT/Containerfile"
+BASE_IMAGE="quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest"
 echo "Creating Containerfile at repo root..."
-cat > "$CONTAINERFILE" << 'EOF'
-FROM quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest
+echo "Base image: $BASE_IMAGE"
+cat > "$CONTAINERFILE" << EOF
+FROM ${BASE_IMAGE}
+#RUN microdnf update -y && microdnf clean all
+LABEL vendor="Cisco Systems" maintainer="Cisco Systems"
+RUN mkdir -p /licenses
+COPY contrib/aci-deployment/LICENSE.txt /licenses/LICENSE.txt
 COPY roles/edpm_lldp /usr/share/ansible/roles/edpm_lldp
 COPY roles/edpm_neutron_opflex_agent /usr/share/ansible/roles/edpm_neutron_opflex_agent
 COPY roles/edpm_cisco_opflex_agent /usr/share/ansible/roles/edpm_cisco_opflex_agent
