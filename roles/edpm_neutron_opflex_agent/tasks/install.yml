@@ -40,10 +40,10 @@
     - {'path': "/var/lib/config-data/ansible-generated/opflex/etc/opflex-agent-ovs/conf.d", "mode": "0750"}
     - {'path': "/var/lib/config-data/ansible-generated/neutron/etc/neutron/", "mode": "0750"}
     - {'path': "/etc/puppet", "mode": "0750"}
-    - {'path': "/run/openvswitch", "mode": "0750", owner: "openvswitch", group: "hugetlbfs"}
+    - {'path': "/run/openvswitch", "mode": "0750", owner: "openvswitch", group: "hugetlbfs", "setype": svirt_sandbox_file_t}
     - {'path': "/var/lib/opflex/files", "mode": "0750"}
     - {'path': "/var/lib/opflex/sockets", "mode": "0750"}
-    - {'path': "/var/run/openvswitch/", "mode": "0750", owner: "openvswitch", group: "hugetlbfs"}
+    - {'path': "/var/run/openvswitch/", "mode": "0750", owner: "openvswitch", group: "hugetlbfs", "setype": svirt_sandbox_file_t}
     - {'path': "/var/lib/openstack/config/containers", "mode": "0750"}
     - {'path': "/var/lib/opflex-agent-ovs", "mode": "0750"}
     - {'path': "/var/lib/opflex-agent-ovs/droplog", "mode": "0750"}
