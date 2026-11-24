@@ -10,6 +10,8 @@ cgroupns: host
 privileged: true
 user: root
 restart: always
+healthcheck:
+  test: /opflex_healthcheck
 volumes: {{ edpm_cisco_opflex_volumes }}
 environment:
   KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
