@@ -1,7 +1,5 @@
 #!/bin/sh
 
-. ${HEALTHCHECK_SCRIPTS:-/usr/share/openstack-tripleo-common/healthcheck}/common.sh
-
 neutron_opflex_agent_status=$(supervisorctl -c /etc/neutron/neutron_opflex_supervisord.conf status neutron-opflex-agent | awk -F ' ' '{print $2}')
 
 

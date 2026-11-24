@@ -10,6 +10,8 @@ cgroupns: host
 privileged: true
 user: root
 restart: always
+healthcheck:
+  test: /etc/neutron/neutron_opflex_healthcheck
 volumes: {{ edpm_cisco_neutron_opflex_volumes }}
 environment:
   KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
